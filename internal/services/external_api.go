@@ -7,7 +7,7 @@ import (
 
 const (
 	eventServiceURL   = "http://localhost:8080" // URL сервиса управления мероприятиями
-	accountServiceURL = "http://localhost:6000" //URL сервиса аккаунта
+	accountServiceURL = "http://localhost:8080" //URL сервиса аккаунта
 )
 
 func HandleAPIRequest(w http.ResponseWriter, r *http.Request) {
