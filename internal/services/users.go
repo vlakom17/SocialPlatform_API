@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func RegisterUser(username, password string) (*models.UserRegistrationResponse, error) {
+func RegisterUser(username, password string) (*models.UserResponse, error) {
 	// Создаем запрос для регистрации пользователя
 	reqBody := &models.UserRegistrationRequest{
 		Username: username,
@@ -37,7 +37,7 @@ func RegisterUser(username, password string) (*models.UserRegistrationResponse, 
 	}
 
 	// Декодируем ответ от аккаунт-сервиса
-	var registrationResp models.UserRegistrationResponse
+	var registrationResp models.UserResponse
 	if err := json.NewDecoder(resp.Body).Decode(&registrationResp); err != nil {
 		return nil, fmt.Errorf("error decoding response body: %v", err)
 	}
@@ -67,7 +67,7 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // UpdateUser отправляет PUT-запрос на изменение данных пользователя к аккаунт-сервису
-func UpdateUser(userID uuid.UUID, updateUserRequest models.UserUpdateRequest) (*models.UserUpdateResponse, error) {
+func UpdateUser(userID uuid.UUID, updateUserRequest models.UserUpdateRequest) (*models.UserResponse, error) {
 	// Преобразуем данные для обновления в JSON
 	reqBodyBytes, err := json.Marshal(updateUserRequest)
 	if err != nil {
@@ -96,7 +96,7 @@ func UpdateUser(userID uuid.UUID, updateUserRequest models.UserUpdateRequest) (*
 	}
 
 	// Декодируем ответ от аккаунт-сервиса
-	var updateResp models.UserUpdateResponse
+	var updateResp models.UserResponse
 	if err := json.NewDecoder(resp.Body).Decode(&updateResp); err != nil {
 		return nil, fmt.Errorf("error decoding response body: %v", err)
 	}
