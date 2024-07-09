@@ -1,65 +1,55 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
-
-	"github.com/gorilla/mux"
 )
 
 const (
-	authServiceURL    = "http://localhost:4000" // URL сервиса авторизации
 	eventServiceURL   = "http://localhost:8080" // URL сервиса управления мероприятиями
 	accountServiceURL = "http://localhost:6000" //URL сервиса аккаунта
 )
 
-// ProxyExternalAPI проксирует запросы к внешнему API
-func ProxyExternalAPI(w http.ResponseWriter, r *http.Request) {
-	// Получаем параметр endpoint из пути
-	vars := mux.Vars(r)
-	endpoint := vars["endpoint"]
-
-	// Формируем URL внешнего API
-	externalAPIURL := "https://external_api_adress/" + endpoint
-
-	// Парсим URL внешнего API
-	parsedURL, err := url.Parse(externalAPIURL)
-	if err != nil {
-		http.Error(w, "Failed to parse external API URL", http.StatusInternalServerError)
+func handleAPIRequest(w http.ResponseWriter, r *http.Request) {
+	// Проверяем, что метод запроса POST
+	if r.Method != http.MethodPost {
+		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 		return
 	}
 
-	// Создаем новый запрос на основе текущего запроса от клиента
-	req := r.Clone(r.Context())
-	req.URL = parsedURL
-
-	// Создаем HTTP клиент
-	client := &http.Client{}
-
-	// Отправляем запрос к внешнему API
-	resp, err := client.Do(req)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error making request to external API: %v", err), http.StatusInternalServerError)
+	// Декодируем JSON из тела запроса
+	var requestData struct {
+		Service_Method string `json:"service_method"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
+		http.Error(w, "Ошибка при чтении JSON", http.StatusBadRequest)
 		return
 	}
-	defer resp.Body.Close()
 
-	// Пробрасываем заголовки ответа от внешнего API к клиенту
-	for key, values := range resp.Header {
-		for _, value := range values {
-			w.Header().Add(key, value)
-		}
-	}
-
-	// Пишем статус код ответа
-	w.WriteHeader(resp.StatusCode)
-
-	// Копируем тело ответа от внешнего API в тело ответа к клиенту
-	_, err = httputil.DumpResponse(resp, true)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error copying response from external API: %v", err), http.StatusInternalServerError)
+	// Определяем, какую ручку активировать на основе данных из запроса
+	switch requestData.Service_Method {
+	case "events_post":
+		// Вызываем функцию для обработки конкретной ручки
+		CreateEventHandler(w, r)
+	case "events_put":
+		// Вызываем функцию для обработки другой ручки
+		UpdateEventHandler(w, r)
+	case "events_get":
+		GetEventHandler(w, r)
+	case "rooms_post":
+		CreateRoomHandler(w, r)
+	case "rooms_get":
+		GetRoomHandler(w, r)
+	case "rooms_delete":
+		DeleteRoomHandler(w, r)
+	case "users_post":
+		RegisterUserHandler(w, r)
+	case "users_put":
+		EditUserHandler(w, r)
+	case "users_get":
+		GetUserDataHandler(w, r)
+	default:
+		http.Error(w, "Unknown Method", http.StatusNotFound)
 		return
 	}
 }

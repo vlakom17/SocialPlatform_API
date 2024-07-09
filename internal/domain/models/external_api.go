@@ -1,5 +1,6 @@
 package models
 
+/*
 // SessionResponse структура для ответа от сервиса авторизации
 type SessionResponse struct {
 	Valid bool `json:"valid"`
@@ -25,3 +26,4 @@ type RequestPayload struct {
 type ResponsePayload struct {
 	Message string `json:"message"`
 }
+*/
