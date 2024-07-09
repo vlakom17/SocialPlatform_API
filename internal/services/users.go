@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"api/internal/models"
+	"api/internal/domain/models"
 	"bytes"
 	"encoding/json"
 	"fmt"

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"api/internal/routes"
+	routes "api/internal/presentation/routers"
 	"log"
 	"net/http"
 
@@ -10,7 +10,11 @@ import (
 
 func App() {
 	router := mux.NewRouter()
-	routes.InitRoutes(router)
+
+	routes.InitExternalRoutes(router)
+	routes.InitEventsRoutes(router)
+	routes.InitRoomRoutes(router)
+	routes.InitUserRoutes(router)
 
 	log.Println("API Gateway сервис запущен на порту 8080")
 	log.Fatal(http.ListenAndServe(":8080", router))

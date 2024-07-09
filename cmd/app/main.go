@@ -1,10 +1,9 @@
 package main
 
 import (
-	"api/internal/app"
+	"api/internal/server/app"
 )
 
 func main() {
 	app.App()
 }
-
