@@ -8,5 +8,5 @@ import (
 
 func InitExternalRoutes(router *mux.Router) {
 	// Маршрут для работы с external api
-	router.HandleFunc("/v1/events/{event_id}", handlers.GetEventHandler).Methods("POST")
+	router.HandleFunc("http://localhost:8080/v1/gateway", handlers.HandleAPIRequest).Methods("POST")
 }

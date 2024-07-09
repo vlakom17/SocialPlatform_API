@@ -10,7 +10,7 @@ const (
 	accountServiceURL = "http://localhost:6000" //URL сервиса аккаунта
 )
 
-func handleAPIRequest(w http.ResponseWriter, r *http.Request) {
+func HandleAPIRequest(w http.ResponseWriter, r *http.Request) {
 	// Проверяем, что метод запроса POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
