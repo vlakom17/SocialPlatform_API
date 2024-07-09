@@ -11,7 +11,7 @@ import (
 
 const (
 	authServiceURL    = "http://localhost:4000" // URL сервиса авторизации
-	eventServiceURL   = "http://localhost:5000" // URL сервиса управления мероприятиями
+	eventServiceURL   = "http://localhost:8080" // URL сервиса управления мероприятиями
 	accountServiceURL = "http://localhost:6000" //URL сервиса аккаунта
 )
 

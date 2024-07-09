@@ -13,18 +13,17 @@ func InitRoutes(router *mux.Router) {
 	router.HandleFunc("/v1/auth/end-session", handlers.EndSessionHandler).Methods("POST")
 
 	// Маршруты для регистрации пользователя, редактирования данных и получения данных о пользователе
-	router.HandleFunc("/v1/auth/register", handlers.RegisterUserHandler).Methods("POST")
-	router.HandleFunc("/v1/auth/edit-user", handlers.EditUserHandler).Methods("PUT")
-	router.HandleFunc("/v1/auth/get-user", handlers.GetUserHandler).Methods("GET")
+	router.HandleFunc("/v1/users", handlers.RegisterUserHandler).Methods("POST")
+	router.HandleFunc("/v1/users/{user_id}", handlers.EditUserHandler).Methods("PUT")
+	router.HandleFunc("/v1/users/{user_id}", handlers.GetUserDataHandler).Methods("GET")
 
 	// Маршруты для работы с мероприятиями
-	router.HandleFunc("/v1/events/create", handlers.CreateEventHandler).Methods("POST")
-	router.HandleFunc("/v1/events/edit", handlers.EditEventHandler).Methods("PUT")
-	router.HandleFunc("/v1/events/get", handlers.GetEventHandler).Methods("GET")
+	router.HandleFunc("/v1/events", handlers.CreateEventHandler).Methods("POST")
+	router.HandleFunc("/v1/events/{event_id}", handlers.UpdateEventHandler).Methods("PUT")
+	router.HandleFunc("/v1/events/{event_id}", handlers.GetEventHandler).Methods("GET")
 
 	// Маршруты для работы с аудиторией
-	router.HandleFunc("/v1/audience/create", handlers.CreateAudienceHandler).Methods("POST")
-	router.HandleFunc("/v1/audience/edit", handlers.EditAudienceHandler).Methods("PUT")
-	router.HandleFunc("/v1/audience/get", handlers.GetAudienceHandler).Methods("GET")
-	router.HandleFunc("/v1/audience/delete", handlers.DeleteAudienceHandler).Methods("DELETE")
+	router.HandleFunc("/v1/rooms", handlers.CreateRoomHandler).Methods("POST")
+	router.HandleFunc("/v1/rooms/{room_id}", handlers.GetRoomHandler).Methods("GET")
+	router.HandleFunc("/v1/rooms/{room_id}", handlers.DeleteRoomHandler).Methods("DELETE")
 }
